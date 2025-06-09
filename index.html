@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeatZoneBDG - Peta Termal Interaktif</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css" />
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://balladaniel.github.io/leaflet-dataclassification/leaflet-dataclassification.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <link href="https://unpkg.com/leaflet.fullscreen@1.2.0/Control.Fullscreen.css" rel="stylesheet" />
+
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="logo">
+                <h1><img 
+        src=".\asset\logobandung.png" 
+        style="max-width: 150px; height: auto; margin-bottom: 0px; margin-top: 0px; align-items: center;"
+      ></h1>
+                <h2>HeatZoneBDG</h2>
+                <p>WebGIS System</p>
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    
+                    <li class="nav-item active" onclick="scrollToSection('hero-main')">
+                        <i class="fas fa-home"></i>
+                        <span>Beranda</span>
+                    <li class="nav-item active" onclick="scrollToSection('header-main')">
+                        <i class="fas fa-brain"></i>
+                        <span>Tema</span>
+                    </li>
+                    <li class="nav-item" onclick="scrollToSection('map-section')">
+                        <i class="fas fa-map"></i>
+                        <span>Peta</span>
+                    </li>
+                    <li class="nav-item" onclick="scrollToSection('data-section')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Data</span>
+                    </li>
+                    <li class="nav-item" onclick="scrollToSection('informasi-section')">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Berita</span>
+                    </li>
+                    <li class="nav-item" onclick="scrollToSection('author-section')">
+                        <i class="fas fa-user-edit"></i>
+                        <span>Author</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="weather-widget">
+  <div class="weather-header">
+    <h3>Cuaca Bandung</h3>
+    <i class="fas fa-cloud-sun"></i>
+  </div>
+  <div class="weather-temp">--°C</div>
+  <div class="weather-info">
+    <div id="weather-condition">Memuat...</div>
+    <div id="weather-city">Bandung</div>
+  </div>
+  <hr style="margin: 1rem 0; border-color: rgba(255,255,255,0.2);">
+  <div class="weather-details">
+    <span id="weather-humidity">Kelembaban: --%</span>
+    <span id="weather-wind">Angin: -- km/h</span>
+  </div>
+  <div class="weather-aqi" id="aqi-info">Memuat data AQI...</div>
+</div>
+
+
+            <div class="sidebar-footer">
+                <h3>Hubungi Pengembang</h3>
+                <p>Email: <a href="mailto:fathinatz@gmail.com">fathinatz@gmail.com</a></p>
+                <p>Instagram: <a href="https://instagram.com/fathinatz" target="_blank">@fathinatz</a></p>
+                <p>Phone: <a href="tel:+6285523797934">+62 855 2379 7934</a></p>
+                <p class="copyright">Bandung Creative Map © 2025</p>
+            </div>
+        </div>
+
+        <div class="content">
+             <div id="hero-main" class="hero-section">
+             <div class="hero-content">
+             <h1>HeatZoneBDG</h1>
+             <p>Eksplorasi Spasial Data Temperatur Perkotaan di Bandung</p>
+             </div>
+             </div>
+            <div class="header" id="header-main">
+                <div>
+                    <h2>BANDUNG HEAT TEMPERATURE</h2>
+                    <div class="header-meta">
+                        <p class="header-meta">
+                            Perkembangan wilayah perkotaan yang pesat, seperti di Kota Bandung, berdampak pada meningkatnya suhu permukaan akibat perubahan penggunaan lahan, khususnya konversi vegetasi menjadi area terbangun seperti permukiman dan industri. 
+                        </p>
+                        <p class="header-meta">
+                            Fenomena ini dikenal sebagai Urban Heat Island (UHI), yaitu kondisi di mana suhu udara di kota lebih tinggi dibandingkan daerah sekitarnya. Untuk memahami dan memetakan UHI secara akurat, digunakan analisis Land Surface Temperature (LST) dari citra satelit. 
+                        </p>
+                        <p class="header-meta">
+                            LST merepresentasikan suhu permukaan bumi berdasarkan radiasi termal dan menjadi data penting dalam kajian lingkungan, perencanaan kota, serta upaya mitigasi perubahan iklim. 
+                        </p>
+                    </div>
+                </div>
+                <div class="header-image">
+                    <img src="asset/header-map.jpg">
+                </div>
+            </div>
+
+            <div class="map-section" id="map-section">
+                <div class="map-section-header">
+                    <h3>Heat Map - Peta Interaktif</h3>
+                </div>
+                <div id="map" class="map-container"></div>
+            </div>
+            
+            <div class="data-section" id="data-section">
+                <h3>Unduh Data Spasial</h3>
+                <div class="data-grid">
+                    <a href="https://drive.google.com/drive/folders/1TwrhH__9_iPSwVuF5O1YbWULmCeDgD7_?usp=sharing" target="_blank" class="data-card card-admin">
+                        <div class="count">01</div>
+                        <h4>Data Batas Administrasi</h4>
+                        <p>Data shapefile batas administrasi kecamatan di Kota Bandung.</p>
+                        <span class="btn">Download Data <i class="fas fa-download"></i></span>
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1FnjvT3CB0KMlY88qr_QIq_cMS4YNJoNj?usp=sharing" target="_blank" class="data-card card-pabrik">
+                        <div class="count">02</div>
+                        <h4>Data Titik Pabrik dan Buffer</h4>
+                        <p>Data shapefile persebaran titik lokasi pabrik dan buffer sejauh 500 m di Kota Bandung.</p>
+                        <span class="btn">Download Data <i class="fas fa-download"></i></span>
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1rhF5DzFMrp6LJqbBcQnuoSglMPnQYPhf?usp=drive_link" target="_blank" class="data-card card-jembatan">
+                        <div class="count">03</div>
+                        <h4>Data Titik Jembatan</h4>
+                        <p>Data shapefile persebaran titik lokasi infrastruktur jembatan di Kota Bandung.</p>
+                        <span class="btn">Download Data <i class="fas fa-download"></i></span>
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1owCJfo7ajVOfWDAeZwIDSXPta2wFHeWD?usp=drive_link" target="_blank" class="data-card card-tuplah">
+                        <div class="count">04</div>
+                        <h4>Data Tutupan Lahan</h4>
+                        <p>Data shapefile area tutupan lahan di Kota Bandung.</p>
+                        <span class="btn">Download Data <i class="fas fa-download"></i></span>
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1CPJ-iKcc1ZeEp52fKHrz8qWVkVztZ6HC?usp=drive_link" target="_blank" class="data-card card-jalan">
+                        <div class="count">05</div>
+                        <h4>Data Jaringan Jalan</h4>
+                        <p>Data shapefile jaringan jalan arteri dan lokal di Kota Bandung.</p>
+                        <span class="btn">Download Data <i class="fas fa-download"></i></span>
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1CPJ-iKcc1ZeEp52fKHrz8qWVkVztZ6HC?usp=drive_link" target="_blank" class="data-card card-bangunan">
+                        <div class="count">06</div>
+                        <h4>Data Titik Bangunan</h4>
+                        <p>Data shapefile persebaran titik bangunan di Kota Bandung.</p>
+                        <span class="btn">Download Data <i class="fas fa-download"></i></span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="data-section" id="informasi-section" style="min-height: 200px;">
+                <h3>Berita</h3>
+                <div class="data-grid">
+
+                    <a href="https://www.detik.com/jabar/berita/d-7262129/penjelasan-bmkg-soal-bandung-yang-panas-saat-puncak-musim-hujan" class="data-card card-news-2">
+                        <div class="card-image">
+                            <img src="https://awsimages.detik.net.id/community/media/visual/2021/12/02/jalan-layang-pasupati-1_169.jpeg?w=600&q=90" alt="Gambar Berita 1">
+                        </div>
+                        <div class="card-content-wrapper">
+                            <h4>Penjelasan BMKG soal Bandung yang Panas Saat Puncak Musim Hujan</h4>
+                            <p>
+                                Badan Meteorologi, Klimatologi dan Geofisika (BMKG) Stasiun Bandung menyebut cuaca ekstrem terjadi di wilayah Jawa Barat akhir-akhir ini. Seperti di Bandung Raya di mana cuaca di siang hari sangat panas namun terkadang juga disertai hujan...
+                                </p>
+                            <span class="btn">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="https://jabar.idntimes.com/news/jawa-barat/cuaca-di-bandung-terasa-panas-meski-sering-hujan-ini-penjelasan-bmkg-00-9y7yl-qxy8fx" class="data-card card-news-2">
+                        <div class="card-image">
+                            <img src="https://rakyatjabarnews.com/wp-content/uploads/2017/12/Kota-Bandung.jpg" alt="Gambar Berita 2">
+                        </div>
+                        <div class="card-content-wrapper">
+                            <h4>Cuaca di Bandung Terasa Panas Meski Sering Hujan, Ini Penjelasan BMKG</h4>
+                            <p>
+                            Suhu di Kota Bandung terasa panas sepekan terakhir. Padahal hujan deras kerap terjadi bahkan dengan durasi cukup lama...
+                            </p>
+                            <span class="btn">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="https://journalstkippgrisitubondo.ac.id/index.php/EDUSAINTEK/article/view/1496" class="data-card card-news-3">
+                        <div class="card-image">
+                            <img src="https://asset.kompas.com/crops/2Vovk5wIpczHkWo4m25fuzaoVuw=/0x0:719x479/1200x800/data/photo/2021/08/23/61233914c4d75.jpg" alt="Gambar Berita 2">
+                        </div>
+                        <div class="card-content-wrapper">
+                            <h4>Fenomena Urban Heat Island di Kota Bandung</h4>
+                            <p>
+                            The Urban Heat Island (UHI) phenomenon is defined as an increase in temperature in urban areas that is higher than the temperature in surrounding rural areas...
+                            </p>
+                            <span class="btn">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.detik.com/jabar/berita/d-6969035/cuaca-panas-terik-bikin-kota-bandung-tak-lagi-sejuk" class="data-card card-news-3">
+                        <div class="card-image">
+                            <img src="https://infobandungkota.com/wp-content/uploads/2023/04/WhatsApp-Image-2023-04-26-at-05.05.47.jpeg" alt="Gambar Berita 2">
+                        </div>
+                        <div class="card-content-wrapper">
+                            <h4>Cuaca Panas Terik Bikin Kota Bandung Tak Lagi Sejuk</h4>
+                            <p>
+                            Beberapa hari terakhir suhu udara terasa lebih panas menyengat. Kondisi ini melanda sejumlah wilayah di Indonesia, termasuk Kota Bandung...
+                            </p>
+                            <span class="btn">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="https://jabar.tribunnews.com/2023/09/29/bandung-sedang-panas-hati-hati-bisa-kena-heatstroke-ini-tindakan-awal-jika-terkena-sengatan-panas" class="data-card card-news-3">
+                        <div class="card-image">
+                            <img src="https://images.bisnis.com/posts/2023/04/27/1650629/pendopo-bandung31.jpg" alt="Gambar Berita 2">
+                        </div>
+                        <div class="card-content-wrapper">
+                            <h4>Bandung Sedang Panas, Hati-hati Bisa Kena Heatstroke</h4>
+                            <p>
+                            Suhu udara di Kota Bandung saat ini mengalami perubahan iklim adanya peningkatan suhu di atas rata - rata pada suhu tertinggi....
+                            </p>
+                            <span class="btn">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.detik.com/jabar/berita/d-6042275/bandung-tak-sedingin-dahulu-walhi-jabar-akibat-aktivitas-manusia" class="data-card card-news-3">
+                        <div class="card-image">
+                            <img src="https://img.inews.co.id/media/420/files/inews_new/2024/03/22/cuaca_panas_menyengat_di_bandung_raya.jpg" alt="Gambar Berita 2">
+                        </div>
+                        <div class="card-content-wrapper">
+                            <h4>Bandung Tak Sedingin Dahulu, Walhi Jabar: Akibat Aktivitas Manusia</h4>
+                            <p>
+                            Dampak perubahan iklim mengakibatkan Kota Bandung mengalami kenaikan suhu. Bandung yang dikenal sebagai kota adem dan sejuk, kini mulai terasa panas dan tak lagi dingin seperti dulu...
+                            </p>
+                            <span class="btn">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    </div>
+            </div>
+
+            <!-- AUTHOR SECTION -->
+  <div id="author-section">
+    <div class="author-content">
+      <h2>Author</h2>
+      <img src="asset/author-picture.png" alt="Profile Picture" class="profile-picture" />
+      <div class="author-name">
+        <h3>Fathina Tazakka</h3>
+      </div>
+      <p>Seorang Analis Sistem Informasi Geografis (SIG) yang fokus pada integrasi data spasial dan non-spasial untuk mendukung pengambilan keputusan berbasis lokasi. Pengalaman mencakup pengolahan data geospasial, pemetaan tematik, serta analisis dan visualisasi data lingkungan, penggunaan lahan, infrastruktur, hingga mitigasi risiko bencana. Saya terbiasa menggunakan berbagai perangkat lunak GIS seperti QGIS, ArcGIS, serta pemrograman untuk pengembangan WebGIS.</p>
+    </div>
+  </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+    <script src="https://unpkg.com/leaflet.fullscreen@1.2.0/Control.Fullscreen.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/georaster"></script>
+    <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>     
+
+    <script src="script.js"></script>
+</body>
+</html>
